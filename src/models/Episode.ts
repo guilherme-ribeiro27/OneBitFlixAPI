@@ -1,5 +1,6 @@
 import { sequelize } from '../database'
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes, Model, Optional, Utils } from 'sequelize'
+import { assert } from 'console'
 
 export interface Episode {
   id: number
@@ -34,7 +35,6 @@ export const Episode = sequelize.define<EpisodeInstance, Episode>('Episode', {
     },
     order: {
         allowNull: false,
-        unique: true,
         type: DataTypes.STRING
     },
     videoUrl: {
