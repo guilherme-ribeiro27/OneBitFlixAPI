@@ -26,5 +26,20 @@ export const courseService = {
         });
 
         return courseWithEpisode;
+    },
+    getRandomFeaturedCourses: async ()=>{
+        const featuredCourses = await Course.findAll({
+            attributes: [
+                'id',
+                'name',
+                'synopsis',
+                ['thumbnail_url','thumbnailUrl'],
+            ],
+            where: {
+                featured: true
+            }
+        })
+        const randomFeaturedCourses = featuredCourses.sort((a,b)=>0.5 - Math.random());
+        return randomFeaturedCourses.slice(0,3)
     }
 }
