@@ -41,5 +41,18 @@ export const courseService = {
         })
         const randomFeaturedCourses = featuredCourses.sort((a,b)=>0.5 - Math.random());
         return randomFeaturedCourses.slice(0,3)
+    },
+    getTopTenNewest: async ()=>{
+        const topTenCourses = await Course.findAll({
+            attributes: [
+                'id',
+                'name',
+                'synopsis',
+                ['thumbnail_url','thumbnailUrl'],
+            ],
+            order:[['created_at','DESC']],
+            limit: 10
+        })
+        return topTenCourses
     }
 }
