@@ -6,8 +6,9 @@ import { User } from "./User";
 Category.hasMany(Course,{as:'courses'})
 Course.belongsTo(Category,)
 
-Course.hasMany(Episode)
-Episode.belongsTo(Course) // Episodes is the default name for the foreign key
+Course.hasMany(Episode, {as:'episodes'})
+Episode.belongsTo(Course, ) 
+
 export{
     Category,Course,Episode,User
 }
