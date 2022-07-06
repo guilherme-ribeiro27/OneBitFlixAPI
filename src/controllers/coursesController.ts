@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { getPaginationParams } from '../helpers/getPaginationParams';
 import { courseService } from '../services/courseService';
 
 export const coursesController = {
@@ -23,6 +24,19 @@ export const coursesController = {
                 if (error instanceof Error)
                 return res.status(400).json({message: error.message})
             }
+    },
+    // GET /courses/search
+    search: async (req : Request, res : Response) => {
+        const { name } = req.query;
+        const [page,perPage] = getPaginationParams(req.query)
+        try {
+            if (typeof name !== 'string') throw new Error('parameter name must be string type');
+            const courses = await courseService.findByName(name,page,perPage);
+            return res.json(courses);
+        } catch (error) {
+            if (error instanceof Error)
+            return res.status(400).json({message: error.message})
+        }
     },
     // GET /courses/:id
     show: async (req : Request, res : Response) => {
