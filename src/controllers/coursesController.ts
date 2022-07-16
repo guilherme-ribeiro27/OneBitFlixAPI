@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getPaginationParams } from '../helpers/getPaginationParams';
 import { AuthenticatedRequest } from '../middlewares/auth';
+import { Course } from '../models';
 import { courseService } from '../services/courseService';
 import { favoriteServices } from '../services/favoriteService';
 import { likeService } from '../services/likeService';
@@ -27,6 +28,16 @@ export const coursesController = {
                 if (error instanceof Error)
                 return res.status(400).json({message: error.message})
             }
+    },
+    // GET /courses/popular
+    popular: async (req : Request, res : Response) => {
+        
+        try {
+            const topTen = await courseService.getTopTenByLikes();
+            return res.status(200).json(topTen);
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).json({message: error.message})
+        }
     },
     // GET /courses/search
     search: async (req : Request, res : Response) => {
@@ -60,5 +71,4 @@ export const coursesController = {
             return res.status(400).json({message: error.message})
         }
     },
-    
 }
