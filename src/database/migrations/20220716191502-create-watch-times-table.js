@@ -8,6 +8,7 @@ module.exports = {
         type: Sequelize.DataTypes.INTEGER
       },
       user_id: {
+        primaryKey: true,
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
         references: { model: 'users', key: 'id' },
@@ -15,6 +16,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       episode_id: {
+        primaryKey: true,
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
         references: { model: 'episodes', key: 'id' },
