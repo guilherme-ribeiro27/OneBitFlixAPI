@@ -17,7 +17,7 @@ function filterLastEpisodesByCourse(episodes:EpisodeInstance[]) {
 
         if(episodeFromSameCourse!.order > episode.order) return currentList
 
-        const listWithoutEpisodeFromSameCourse = currentList.filter(ep=> ep.courseId !== episode.courseId)
+        const listWithoutEpisodeFromSameCourse = currentList!.filter(ep=> ep.courseId !== episode.courseId)
         listWithoutEpisodeFromSameCourse.push(episode)
 
         return listWithoutEpisodeFromSameCourse
@@ -27,7 +27,6 @@ function filterLastEpisodesByCourse(episodes:EpisodeInstance[]) {
 }
 
 export const userService = {
-    // GET /users/:email
     findByEmail : async (email : string) => {
         return await User.findOne({where:{email}})
     },
@@ -36,7 +35,16 @@ export const userService = {
     create: async(attributes: UserCreationAttributes) =>{
         return await User.create(attributes);
     },
-
+    update: async(id: number, attributes:{
+        firstName: string,
+        lastName: string,
+        phone: string,
+        birth: Date,
+        email: string
+    })=>{
+        const [affectedRows, updatedUsers] = await User.update(attributes,{where:{id},returning:true})
+        return updatedUsers[0];
+    },
     //GET /watching
     getKeepWatichingList: async(userId: number) =>{
         const userWithWatchingEpisodes = await User.findByPk(userId,{
@@ -56,5 +64,6 @@ export const userService = {
         const keepWatchingList = filterLastEpisodesByCourse(userWithWatchingEpisodes.Episodes!)
 
         return keepWatchingList
-    }
+    },
+
 }
